@@ -22,6 +22,8 @@ namespace ChromeSpeechProxy
 
         private bool _mWaitForExit = true;
 
+        private bool _mClosing = false;
+
         private Thread _mThread = null;
 
         private List<string> _mWebGLSpeechDetectionPluginResults = new List<string>();
@@ -66,10 +68,13 @@ namespace ChromeSpeechProxy
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            btnStart.Enabled = true;
-            btnStop.Enabled = false;
-            lblStatus.Enabled = true;
-            txtPort.Enabled = true;
+            if (!_mClosing)
+            {
+                btnStart.Enabled = true;
+                btnStop.Enabled = false;
+                lblStatus.Enabled = true;
+                txtPort.Enabled = true;
+            }
 
             StopProxy();
         }
@@ -143,7 +148,10 @@ namespace ChromeSpeechProxy
                 return;
             }
 
-            lblStatus.Text = "Status:";
+            if (!_mClosing)
+            {
+                lblStatus.Text = "Status:";
+            }
             AppendStatus(Environment.NewLine);
             AppendStatus(msg, args);
             AppendStatus(Environment.NewLine);
@@ -157,11 +165,19 @@ namespace ChromeSpeechProxy
                 return;
             }
 
-            lblChrome.Text = "Chrome: [Connected]";
+            if (!_mClosing)
+            {
+                lblChrome.Text = "Chrome: [Connected]";
+            }
         }
 
         private void DetectedUnity()
         {
+            if (_mClosing)
+            {
+                return;
+            }
+
             if (InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate { DetectedUnity(); });
@@ -173,6 +189,11 @@ namespace ChromeSpeechProxy
 
         private void AppendStatus(string msg, params object[] args)
         {
+            if (_mClosing)
+            {
+                return;
+            }
+
             if (InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate { AppendStatus(msg, args); });
@@ -329,8 +350,11 @@ namespace ChromeSpeechProxy
 
             _mHttpListener.Abort();
 
-            lblChrome.Text = "Chrome: [Not Connected]";
-            lblUnity.Text = "Unity: [Not Connected]";
+            if (!_mClosing)
+            {
+                lblChrome.Text = "Chrome: [Not Connected]";
+                lblUnity.Text = "Unity: [Not Connected]";
+            }
 
             AppendStatus("Proxy Stopped!");
         }
@@ -338,6 +362,8 @@ namespace ChromeSpeechProxy
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            _mClosing = true;
 
             StopProxy();
         }
