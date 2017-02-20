@@ -146,7 +146,7 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(375, 401);
             this.Name = "Form1";
-            this.Text = "Chrome Speech Proxy Tab";
+            this.Text = "Chrome Speech Proxy";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
