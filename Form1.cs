@@ -13,6 +13,9 @@ namespace ChromeSpeechProxy
         const string KEY_CHROME_SPEECH_PROXY = "CHROME_SPEECH_PROXY";
         const string KEY_PROXY_PORT = "PROXY_PORT";
 
+        const string TOKEN_INIT = "Init:";
+        const string TOKEN_GET_RESULT = "GetResult:";
+
         private HttpListener _mHttpListener = null;
 
         private bool _mWaitForExit = true;
@@ -210,10 +213,19 @@ namespace ChromeSpeechProxy
                                 if (null != encodedString)
                                 {
                                     byte[] data = Convert.FromBase64String(encodedString);
-                                    string decodedString = Encoding.UTF8.GetString(data);
-                                    if (!string.IsNullOrEmpty(decodedString))
+                                    string request = Encoding.UTF8.GetString(data);
+                                    if (!string.IsNullOrEmpty(request))
                                     {
+                                        if (request.StartsWith(TOKEN_GET_RESULT))
+                                        {
+                                            string message = request.Substring(TOKEN_GET_RESULT.Length);
+                                            _mWebGLSpeechDetectionPluginResults.Add(message);
+                                        }
 
+                                        else if (request.StartsWith(TOKEN_INIT))
+                                        {
+                                            RunJavaScript("console.log(\"Init Complete\")");
+                                        }
                                     }
                                 }
                             }

@@ -33,7 +33,10 @@ function proxyData(message) {
 	  var commands = response.split("\n");
 	  for (var i=0; i < commands.length; ++i) {
 	    var js = commands[i];
-	    console.log("Execute: "+js);
+		if (js == "") {
+		  continue;
+		}
+	    //console.log("Execute: "+js);
 	    eval(js);
 	  }
     }
