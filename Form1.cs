@@ -19,7 +19,11 @@ namespace ChromeSpeechProxy
 
         private Thread _mThread = null;
 
-        public static List<string> _mWebGLSpeechDetectionPluginResults = new List<string>();
+        private List<string> _mWebGLSpeechDetectionPluginResults = new List<string>();
+
+        private List<string> _mPendingJavaScript = new List<string>();
+
+        private StringBuilder _mStringBuilder = new StringBuilder();
 
         public Form1()
         {
@@ -198,18 +202,26 @@ namespace ChromeSpeechProxy
                         }
                         else if (context.Request.Url.LocalPath.EndsWith("/ProxyData"))
                         {
-                            DetectedChrome();
-                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
-                            string encodedString = parameters["message"];
-                            if (null != encodedString)
+                            try
                             {
-                                byte[] data = Convert.FromBase64String(encodedString);
-                                string decodedString = Encoding.UTF8.GetString(data);
-                                if (!string.IsNullOrEmpty(decodedString))
+                                DetectedChrome();
+                                System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                                string encodedString = parameters["message"];
+                                if (null != encodedString)
                                 {
+                                    byte[] data = Convert.FromBase64String(encodedString);
+                                    string decodedString = Encoding.UTF8.GetString(data);
+                                    if (!string.IsNullOrEmpty(decodedString))
+                                    {
 
+                                    }
                                 }
                             }
+                            catch (Exception)
+                            {
+                            }
+
+                            response = GetPendingJavaScript();
                         }
                         else if (context.Request.Url.LocalPath.EndsWith("/Abort"))
                         {
@@ -233,7 +245,7 @@ namespace ChromeSpeechProxy
                             {
                                 using (System.IO.StreamReader sr = new System.IO.StreamReader("proxy.html"))
                                 {
-                                    response = sr.ReadToEnd();
+                                    response = sr.ReadToEnd().Replace("__PROXY_PORT__", txtPort.Text);
                                 }
                             }
                             catch (Exception)
@@ -274,7 +286,25 @@ namespace ChromeSpeechProxy
 
         private void RunJavaScript(string js)
         {
+            _mPendingJavaScript.Add(js);
+        }
 
+        private string GetPendingJavaScript()
+        {
+            while (_mPendingJavaScript.Count > 0)
+            {
+                _mStringBuilder.AppendLine(_mPendingJavaScript[0]);
+                _mPendingJavaScript.RemoveAt(0);
+            }
+
+            string result = _mStringBuilder.ToString();
+
+            if (_mStringBuilder.Length > 0)
+            {
+                _mStringBuilder.Remove(0, _mStringBuilder.Length);
+            }
+
+            return result;
         }
 
         private void StopProxy()

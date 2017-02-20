@@ -18,16 +18,25 @@ function b64EncodeUnicode(str) {
 function proxyData(message) {
 
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', "http://localhost:83/ProxyData?message="+b64EncodeUnicode(message), true);
+  xhr.open('GET', "http://localhost:__PROXY_PORT__/ProxyData?message="+b64EncodeUnicode(message), true);
   xhr.send();
 
   function processRequest(e) {
-    console.log("process request:");
+    //console.log("process request:");
     if (xhr.readyState == 4 && xhr.status == 200) {
-      //var response = JSON.parse(xhr.responseText);
       var response = xhr.responseText;
-        console.log("Response: "+xhr.responseText);
+      if (response == undefined ||
+	    response == "") {
+		return;
       }
+	  //console.log("Response: " + response);
+	  var commands = response.split("\n");
+	  for (var i=0; i < commands.length; ++i) {
+	    var js = commands[i];
+	    console.log("Execute: "+js);
+	    eval(js);
+	  }
+    }
   }
 
   xhr.onreadystatechange = processRequest;
