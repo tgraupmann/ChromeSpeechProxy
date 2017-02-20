@@ -248,6 +248,7 @@ namespace ChromeSpeechProxy
 
                                         else if (request.StartsWith(TOKEN_INIT))
                                         {
+                                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                                             RunJavaScript("console.log(\"Init Complete\")");
                                         }
                                     }
@@ -261,11 +262,13 @@ namespace ChromeSpeechProxy
                         }
                         else if (context.Request.Url.LocalPath.EndsWith("/Abort"))
                         {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                             DetectedUnity();
                             RunJavaScript("WebGLSpeechDetectionPlugin.Abort()");
                         }
                         else if (context.Request.Url.LocalPath.EndsWith("/SetLanguage"))
                         {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                             DetectedUnity();
                             System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
                             string lang = parameters["lang"];
@@ -276,6 +279,7 @@ namespace ChromeSpeechProxy
                         }
                         else
                         {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                             DetectedChrome();
                             try
                             {
