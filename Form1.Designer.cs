@@ -35,6 +35,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblChrome = new System.Windows.Forms.Label();
             this.lblUnity = new System.Windows.Forms.Label();
+            this.btnOpenChrome = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -60,7 +61,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(118, 69);
+            this.btnStart.Location = new System.Drawing.Point(116, 69);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(95, 39);
             this.btnStart.TabIndex = 2;
@@ -88,7 +89,7 @@
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.Location = new System.Drawing.Point(12, 209);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(335, 237);
+            this.lblStatus.Size = new System.Drawing.Size(439, 237);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Status:";
             // 
@@ -120,11 +121,22 @@
             this.lblUnity.Text = "Unity: [Not Connected]";
             this.lblUnity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // btnOpenChrome
+            // 
+            this.btnOpenChrome.Location = new System.Drawing.Point(252, 124);
+            this.btnOpenChrome.Name = "btnOpenChrome";
+            this.btnOpenChrome.Size = new System.Drawing.Size(199, 23);
+            this.btnOpenChrome.TabIndex = 3;
+            this.btnOpenChrome.Text = "Open Chrome Proxy Tab";
+            this.btnOpenChrome.UseVisualStyleBackColor = true;
+            this.btnOpenChrome.Click += new System.EventHandler(this.btnOpenChrome_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(359, 455);
+            this.ClientSize = new System.Drawing.Size(463, 455);
+            this.Controls.Add(this.btnOpenChrome);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.txtPort);
@@ -134,7 +146,7 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(375, 401);
             this.Name = "Form1";
-            this.Text = "Chrome Speech Proxy";
+            this.Text = "Chrome Speech Proxy Tab";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -150,6 +162,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblChrome;
         private System.Windows.Forms.Label lblUnity;
+        private System.Windows.Forms.Button btnOpenChrome;
     }
 }
 

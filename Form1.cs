@@ -10,6 +10,8 @@ namespace ChromeSpeechProxy
 {
     public partial class Form1 : Form
     {
+        const string APP_CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+
         const string KEY_CHROME_SPEECH_PROXY = "CHROME_SPEECH_PROXY";
         const string KEY_PROXY_PORT = "PROXY_PORT";
 
@@ -338,6 +340,14 @@ namespace ChromeSpeechProxy
             base.OnClosed(e);
 
             StopProxy();
+        }
+
+        private void btnOpenChrome_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_CHROME,
+                string.Format("http://localhost:{0}", txtPort.Text));
+            process.Start();
         }
     }
 }
