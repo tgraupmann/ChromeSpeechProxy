@@ -445,18 +445,54 @@ namespace ChromeSpeechProxy
                         {
                             DetectedUnity();
                             RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtterancePitch(0, 0)"));
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string utterance = parameters["utterance"];
+                            int index;
+                            string strPitch = parameters["pitch"];
+                            float pitch;
+                            if (int.TryParse(utterance, out index) &&
+                                float.TryParse(strPitch, out pitch))
+                            {
+                                RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtterancePitch({0}, {1})", index, pitch));
+                            }
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_RATE))
                         {
                             DetectedUnity();
-                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceRate(0, 0)"));
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string utterance = parameters["utterance"];
+                            int index;
+                            string strRate = parameters["rate"];
+                            float rate;
+                            if (int.TryParse(utterance, out index) &&
+                                float.TryParse(strRate, out rate))
+                            {
+                                RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceRate({0}, {1})", index, rate));
+                            }
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_TEXT))
                         {
                             DetectedUnity();
-                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceText(0, 0)"));
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string utterance = parameters["utterance"];
+                            int index;
+                            if (int.TryParse(utterance, out index))
+                            {
+                                string encoded = parameters["text"];
+                                string text;
+                                if (string.IsNullOrEmpty(encoded))
+                                {
+                                    text = string.Empty;
+                                }
+                                else
+                                {
+                                    byte[] decodedBytes = Convert.FromBase64String(encoded);
+                                    text = UTF8Encoding.UTF8.GetString(decodedBytes);
+                                }
+                                RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceText({0}, \"{1}\")", index, text));
+                            }
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SPEAK))
