@@ -25,6 +25,7 @@ namespace ChromeSpeechProxy
         const string PATH_SPEECH_DETECTION_SET_LANGUAGE = "/SpeechDetectionSetLanguage";
 
         const string PATH_SPEECH_SYNTHESIS_CANCEL = "/SpeechSynthesisCancel";
+        const string PATH_SPEECH_SYNTHESIS_CONNECT = "/SpeechSynthesisConnect";
         const string PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE = "/SpeechSynthesisCreateSpeechSynthesisUtterance";
         const string PATH_SPEECH_SYNTHESIS_GET_VOICES = "/SpeechSynthesisGetVoices";
         const string PATH_SPEECH_SYNTHESIS_SET_PITCH = "/SpeechSynthesisSetPitch";
@@ -38,6 +39,7 @@ namespace ChromeSpeechProxy
         const string TOKEN_SPEECH_SYNTHESIS_CANCEL = "SpeechSynthesisCancel:";
         const string TOKEN_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE = "SpeechSynthesisCreateSpeechSynthesisUtterance:";
         const string TOKEN_SPEECH_SYNTHESIS_GET_VOICES = "SpeechSynthesisGetVoices:";
+        const string TOKEN_SPEECH_SYNTHESIS_IDLE = "SpeechSynthesisIdle:";
         const string TOKEN_SPEECH_SYNTHESIS_SET_PITCH = "SpeechSynthesisSetPitch:";
         const string TOKEN_SPEECH_SYNTHESIS_SET_RATE = "SpeechSynthesisSetRate:";
         const string TOKEN_SPEECH_SYNTHESIS_SET_TEXT = "SpeechSynthesisSetText:";
@@ -257,9 +259,19 @@ namespace ChromeSpeechProxy
 
             else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE))
             {
+                string message = request.Substring(TOKEN_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE.Length);
+                int index;
+                if (int.TryParse(message, out index))
+                {
+
+                }
             }
 
             else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_GET_VOICES))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_IDLE))
             {
             }
 
@@ -376,6 +388,11 @@ namespace ChromeSpeechProxy
                             DetectedUnity();
                             RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.Cancel()"));
                         }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CONNECT))
+                        {
+                            DetectedUnity();
+                        }                            
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE))
                         {

@@ -611,6 +611,10 @@ var WebGLSpeechSynthesisPlugin = {
             proxyData(msg);
         }
         initVoices();
+
+        setInterval(function () {
+            proxyData("SpeechSynthesisIdle");
+        }, 1000);
     },
     CreateSpeechSynthesisUtterance: function () {
         if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
