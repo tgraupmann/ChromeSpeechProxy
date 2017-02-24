@@ -254,7 +254,8 @@ namespace ChromeSpeechProxy
             else if (request.StartsWith(TOKEN_SPEECH_DETECTION_GET_RESULT))
             {
                 string message = request.Substring(TOKEN_SPEECH_DETECTION_GET_RESULT.Length);
-                _mWebGLSpeechDetectionPluginResults.Add(message);
+                string decoded = HttpUtility.UrlDecode(message);
+                _mWebGLSpeechDetectionPluginResults.Add(decoded);
             }
 
             else if (request.StartsWith(TOKEN_SPEECH_DETECTION_INIT))
@@ -282,7 +283,8 @@ namespace ChromeSpeechProxy
                 string jsonData = request.Substring(TOKEN_SPEECH_SYNTHESIS_GET_VOICES.Length);
                 if (!string.IsNullOrEmpty(jsonData))
                 {
-                    _mWebGLSpeechSynthesisPluginVoices.Add(jsonData);
+                    string decoded = HttpUtility.UrlDecode(jsonData);
+                    _mWebGLSpeechSynthesisPluginVoices.Add(decoded);
                 }
             }
 
@@ -345,7 +347,7 @@ namespace ChromeSpeechProxy
                                 DetectedChrome();
                                 System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
                                 string encodedString = parameters["message"];
-                                if (null != encodedString)
+                                if (!string.IsNullOrEmpty(encodedString))
                                 {
                                     byte[] data = Convert.FromBase64String(encodedString);
                                     string request = Encoding.UTF8.GetString(data);

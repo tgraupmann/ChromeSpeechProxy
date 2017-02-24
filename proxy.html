@@ -463,7 +463,7 @@ var WebGLSpeechDetectionPlugin = {
       //console.log(JSON.stringify(jsonData, undefined, 2));
       //document.mWebGLSpeechDetectionPluginResults.push(JSON.stringify(jsonData));
 
-      var msg = "SpeechDetectionGetResult:"+JSON.stringify(jsonData); //push results
+      var msg = "SpeechDetectionGetResult:" + encodeURIComponent(JSON.stringify(jsonData)); //push results
       proxyData(msg);
 
     };
@@ -531,7 +531,7 @@ var WebGLSpeechDetectionPlugin = {
       returnStr = "No results available";
     } else {
       //console.log(JSON.stringify(document.mWebGLSpeechDetectionLanguages, undefined, 2));
-      returnStr = JSON.stringify(document.mWebGLSpeechDetectionLanguages);
+      returnStr = encodeURIComponent(JSON.stringify(document.mWebGLSpeechDetectionLanguages));
     }
 
     var msg = "SpeechDetectionGetLanguages:" + returnStr;
@@ -584,7 +584,7 @@ var WebGLSpeechSynthesisPlugin = {
                     jsonData.voices.push(speechSynthesisVoice);
                 }
                 //console.log(JSON.stringify(jsonData, undefined, 2));
-                returnStr = JSON.stringify(jsonData);
+                returnStr = encodeURIComponent(JSON.stringify(jsonData));
             }
         }
         var msg = "SpeechSynthesisGetVoices:" + returnStr;
