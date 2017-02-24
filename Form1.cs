@@ -498,7 +498,13 @@ namespace ChromeSpeechProxy
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SPEAK))
                         {
                             DetectedUnity();
-                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.Speak(0)"));
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string utterance = parameters["utterance"];
+                            int index;
+                            if (int.TryParse(utterance, out index))
+                            {
+                                RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.Speak({0})", index));
+                            }
                         }
 
                         byte[] bytes = UTF8Encoding.UTF8.GetBytes(response);
