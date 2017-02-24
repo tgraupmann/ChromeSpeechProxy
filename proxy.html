@@ -49,7 +49,7 @@ var WebGLSpeechDetectionPlugin = {
 
   IsAvailable: function() {
     var result = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-    var msg = "IsAvailable:"+result;
+    var msg = "SpeechDetectionIsAvailable:"+result;
 	proxyData(msg);
   },
   
@@ -463,7 +463,7 @@ var WebGLSpeechDetectionPlugin = {
       //console.log(JSON.stringify(jsonData, undefined, 2));
       //document.mWebGLSpeechDetectionPluginResults.push(JSON.stringify(jsonData));
 
-      var msg = "GetResult:"+JSON.stringify(jsonData); //push results
+      var msg = "SpeechDetectionGetResult:"+JSON.stringify(jsonData); //push results
       proxyData(msg);
 
     };
@@ -471,7 +471,7 @@ var WebGLSpeechDetectionPlugin = {
     document.mWebGLSpeechDetectionPluginRecognition.addEventListener('end', document.mWebGLSpeechDetectionPluginRecognition.start);
     document.mWebGLSpeechDetectionPluginRecognition.stop();
     document.mWebGLSpeechDetectionPluginRecognition.start();
-    var msg = "Init:";
+    var msg = "SpeechDetectionInit:";
     proxyData(msg);
   },
 
@@ -503,7 +503,7 @@ var WebGLSpeechDetectionPlugin = {
     }  
     //console.log("GetNumberOfResults length="+document.mWebGLSpeechDetectionPluginResults.length);
     var result = document.mWebGLSpeechDetectionPluginResults.length;
-    var msg = "GetNumberOfResults:"+result;
+    var msg = "SpeechDetectionGetNumberOfResults:"+result;
     proxyData(msg);
   },
 
@@ -520,7 +520,7 @@ var WebGLSpeechDetectionPlugin = {
     }
 
     document.mWebGLSpeechDetectionPluginResults = document.mWebGLSpeechDetectionPluginResults.splice(1);
-    var msg = "GetResult:"+returnStr;
+    var msg = "SpeechDetectionGetResult:"+returnStr;
     proxyData(msg);
   },
   
@@ -534,7 +534,7 @@ var WebGLSpeechDetectionPlugin = {
       returnStr = JSON.stringify(document.mWebGLSpeechDetectionLanguages);
     }
 
-    var msg = "GetLanguages:"+returnStr;
+    var msg = "SpeechDetectionGetLanguages:" + returnStr;
     proxyData(msg);
   },
   
@@ -550,6 +550,183 @@ var WebGLSpeechDetectionPlugin = {
 };
 
 WebGLSpeechDetectionPlugin.Init();
+
+
+
+var WebGLSpeechSynthesisPlugin = {
+    IsAvailable: function () {
+        var result;
+        if (typeof speechSynthesis === "undefined") {
+            result = false;
+        } else {
+            result = true;
+        }
+        var msg = "SpeechSynthesisIsAvailable:" + result;
+        proxyData(msg);
+    },
+    GetVoices: function () {
+        var returnStr = "";
+        if (typeof speechSynthesis === "undefined") {
+            // not supported
+        } else {
+            var voices = document.mWebGLSpeechSynthesisPluginVoices;
+            if (voices != undefined) {
+                var jsonData = {};
+                jsonData.voices = [];
+                for (var voiceIndex = 0; voiceIndex < voices.length; ++voiceIndex) {
+                    var voice = voices[voiceIndex];
+                    var speechSynthesisVoice = {};
+                    speechSynthesisVoice._default = voice.default; //default is reserved word
+                    speechSynthesisVoice.lang = voice.lang;
+                    speechSynthesisVoice.localService = voice.localService;
+                    speechSynthesisVoice.name = voice.name;
+                    speechSynthesisVoice.voiceURI = voice.voiceURI;
+                    jsonData.voices.push(speechSynthesisVoice);
+                }
+                //console.log(JSON.stringify(jsonData, undefined, 2));
+                returnStr = JSON.stringify(jsonData);
+            }
+        }
+        var msg = "SpeechSynthesisGetVoices:" + returnStr;
+        proxyData(msg);
+    },
+    Init: function () {
+        //console.log("WebGLSpeechSynthesisPlugin: Init");
+        if (typeof speechSynthesis === "undefined") {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginVoices != undefined) {
+            return; //already initialized
+        }
+        var initVoices = function () {
+            var voices = speechSynthesis.getVoices();
+            if (voices.length == 0) {
+                setTimeout(function () { initVoices() }, 10);
+                return;
+            }
+            document.mWebGLSpeechSynthesisPluginVoices = voices;
+            //console.log(document.mWebGLSpeechSynthesisPluginVoices);
+
+            var msg = "SpeechSynthesisInit:";
+            proxyData(msg);
+        }
+        initVoices();
+    },
+    CreateSpeechSynthesisUtterance: function () {
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            document.mWebGLSpeechSynthesisPluginUtterances = [];
+        }
+        var index;
+        if (typeof speechSynthesis === "undefined") {
+            index = -1;
+        } else {
+            index = document.mWebGLSpeechSynthesisPluginUtterances.length;
+            var instance = new SpeechSynthesisUtterance();
+            document.mWebGLSpeechSynthesisPluginUtterances.push(instance);
+        }
+        var msg = "SpeechSynthesisCreateSpeechSynthesisUtterance:" + index;
+        proxyData(msg);
+    },
+    SetUtterancePitch: function (index, pitch) {
+        if (typeof speechSynthesis === "undefined") {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances.length <= index) {
+            return;
+        }
+        var instance = document.mWebGLSpeechSynthesisPluginUtterances[index];
+        if (instance == undefined) {
+            return;
+        }
+        var strPitch = pitch;
+        instance.pitch = parseFloat(strPitch);
+    },
+    SetUtteranceRate: function (index, rate) {
+        if (typeof speechSynthesis === "undefined") {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances.length <= index) {
+            return;
+        }
+        var instance = document.mWebGLSpeechSynthesisPluginUtterances[index];
+        if (instance == undefined) {
+            return;
+        }
+        var strRate = rate;
+        instance.rate = parseFloat(strRate);
+    },
+    SetUtteranceText: function (index, text) {
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances.length <= index) {
+            return;
+        }
+        var instance = document.mWebGLSpeechSynthesisPluginUtterances[index];
+        if (instance == undefined) {
+            return;
+        }
+        instance.text = text;
+    },
+    SetUtteranceVoice: function (index, voiceURI) {
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances.length <= index) {
+            return;
+        }
+        var instance = document.mWebGLSpeechSynthesisPluginUtterances[index];
+        if (instance == undefined) {
+            return;
+        }
+        var voices = document.mWebGLSpeechSynthesisPluginVoices;
+        if (voices == undefined) {
+            return;
+        }
+        var strVoice = voiceURI;
+        //console.log("SetUtteranceVoice: "+utterLang);
+        for (var voiceIndex = 0; voiceIndex < voices.length; ++voiceIndex) {
+            var voice = voices[voiceIndex];
+            if (voice == undefined) {
+                continue;
+            }
+            if (voice.voiceURI == strVoice) {
+                instance.voice = voice;
+                return;
+            }
+        }
+    },
+    Speak: function (index) {
+        if (typeof speechSynthesis === "undefined") {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances == undefined) {
+            return;
+        }
+        if (document.mWebGLSpeechSynthesisPluginUtterances.length <= index) {
+            return;
+        }
+        var instance = document.mWebGLSpeechSynthesisPluginUtterances[index];
+        if (instance == undefined) {
+            return;
+        }
+        speechSynthesis.speak(instance);
+    },
+    Cancel: function () {
+        if (typeof speechSynthesis === "undefined") {
+            return;
+        }
+        speechSynthesis.cancel();
+    }
+};
+
+WebGLSpeechSynthesisPlugin.Init();
 
 </script>
 </html>

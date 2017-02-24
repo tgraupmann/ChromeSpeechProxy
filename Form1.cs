@@ -16,8 +16,32 @@ namespace ChromeSpeechProxy
         const string KEY_CHROME_SPEECH_PROXY = "CHROME_SPEECH_PROXY";
         const string KEY_PROXY_PORT = "PROXY_PORT";
 
-        const string TOKEN_INIT = "Init:";
-        const string TOKEN_GET_RESULT = "GetResult:";
+        const string PATH_ROOT = "/";
+        const string PATH_PROXY_DATA = "/ProxyData";
+
+        const string PATH_SPEECH_DETECTION_ABORT = "/SpeechDetectionAbort";
+        const string PATH_SPEECH_DETECTION_INIT = "/SpeechDetectionInit";
+        const string PATH_SPEECH_DETECTION_GET_RESULT = "/SpeechDetectionGetResult";
+        const string PATH_SPEECH_DETECTION_SET_LANGUAGE = "/SpeechDetectionSetLanguage";
+
+        const string PATH_SPEECH_SYNTHESIS_CANCEL = "/SpeechSynthesisCancel";
+        const string PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE = "/SpeechSynthesisCreateSpeechSynthesisUtterance";
+        const string PATH_SPEECH_SYNTHESIS_GET_VOICES = "/SpeechSynthesisGetVoices";
+        const string PATH_SPEECH_SYNTHESIS_SET_PITCH = "/SpeechSynthesisSetPitch";
+        const string PATH_SPEECH_SYNTHESIS_SET_RATE = "/SpeechSynthesisSetRate";
+        const string PATH_SPEECH_SYNTHESIS_SET_TEXT = "/SpeechSynthesisSetText";
+        const string PATH_SPEECH_SYNTHESIS_SPEAK = "/SpeechSynthesisSpeak";
+
+        const string TOKEN_SPEECH_DETECTION_GET_RESULT = "SpeechDetectionGetResult:";
+        const string TOKEN_SPEECH_DETECTION_INIT = "SpeechDetectionInit:";
+
+        const string TOKEN_SPEECH_SYNTHESIS_CANCEL = "SpeechSynthesisCancel:";
+        const string TOKEN_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE = "SpeechSynthesisCreateSpeechSynthesisUtterance:";
+        const string TOKEN_SPEECH_SYNTHESIS_GET_VOICES = "SpeechSynthesisGetVoices:";
+        const string TOKEN_SPEECH_SYNTHESIS_SET_PITCH = "SpeechSynthesisSetPitch:";
+        const string TOKEN_SPEECH_SYNTHESIS_SET_RATE = "SpeechSynthesisSetRate:";
+        const string TOKEN_SPEECH_SYNTHESIS_SET_TEXT = "SpeechSynthesisSetText:";
+        const string TOKEN_SPEECH_SYNTHESIS_SPEAK = "SpeechSynthesisSpeak:";
 
         private HttpListener _mHttpListener = null;
 
@@ -204,6 +228,58 @@ namespace ChromeSpeechProxy
             lblStatus.Text += string.Format(msg, args) + Environment.NewLine;
         }
 
+        /// <summary>
+        /// Handle requests with messages from the proxy
+        /// </summary>
+        /// <param name="request"></param>
+        private void HandleProxyData(string request)
+        {
+            if (string.IsNullOrEmpty(request))
+            {
+                return;
+            }
+
+            if (request.StartsWith(TOKEN_SPEECH_DETECTION_GET_RESULT))
+            {
+                string message = request.Substring(TOKEN_SPEECH_DETECTION_GET_RESULT.Length);
+                _mWebGLSpeechDetectionPluginResults.Add(message);
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_DETECTION_INIT))
+            {
+                _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
+                RunJavaScript("console.log(\"Init Complete\")");
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_CANCEL))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_GET_VOICES))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_SET_PITCH))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_SET_RATE))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_SET_TEXT))
+            {
+            }
+
+            else if (request.StartsWith(TOKEN_SPEECH_SYNTHESIS_SPEAK))
+            {
+            }
+        }
+
         private void WorkerThread()
         {
             // keep listening and send a response
@@ -218,66 +294,11 @@ namespace ChromeSpeechProxy
 
                         string response = "";
 
-                        if (context.Request.Url.LocalPath.EndsWith("/GetResult"))
+                        if (string.IsNullOrEmpty(context.Request.Url.LocalPath))
                         {
-                            DetectedUnity();
-                            if (_mWebGLSpeechDetectionPluginResults.Count > 0)
-                            {
-                                response = _mWebGLSpeechDetectionPluginResults[0];
-                                _mWebGLSpeechDetectionPluginResults.RemoveAt(0);
-                            }
                         }
-                        else if (context.Request.Url.LocalPath.EndsWith("/ProxyData"))
-                        {
-                            try
-                            {
-                                DetectedChrome();
-                                System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
-                                string encodedString = parameters["message"];
-                                if (null != encodedString)
-                                {
-                                    byte[] data = Convert.FromBase64String(encodedString);
-                                    string request = Encoding.UTF8.GetString(data);
-                                    if (!string.IsNullOrEmpty(request))
-                                    {
-                                        if (request.StartsWith(TOKEN_GET_RESULT))
-                                        {
-                                            string message = request.Substring(TOKEN_GET_RESULT.Length);
-                                            _mWebGLSpeechDetectionPluginResults.Add(message);
-                                        }
 
-                                        else if (request.StartsWith(TOKEN_INIT))
-                                        {
-                                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
-                                            RunJavaScript("console.log(\"Init Complete\")");
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception)
-                            {
-                            }
-
-                            response = GetPendingJavaScript();
-                        }
-                        else if (context.Request.Url.LocalPath.EndsWith("/Abort"))
-                        {
-                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
-                            DetectedUnity();
-                            RunJavaScript("WebGLSpeechDetectionPlugin.Abort()");
-                        }
-                        else if (context.Request.Url.LocalPath.EndsWith("/SetLanguage"))
-                        {
-                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
-                            DetectedUnity();
-                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
-                            string lang = parameters["lang"];
-                            if (null != lang)
-                            {
-                                RunJavaScript(string.Format("WebGLSpeechDetectionPlugin.SetLanguage(\"{0}\")", lang));
-                            }
-                        }
-                        else
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_ROOT))
                         {
                             _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                             DetectedChrome();
@@ -292,6 +313,104 @@ namespace ChromeSpeechProxy
                             {
 
                             }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_PROXY_DATA))
+                        {
+                            try
+                            {
+                                DetectedChrome();
+                                System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                                string encodedString = parameters["message"];
+                                if (null != encodedString)
+                                {
+                                    byte[] data = Convert.FromBase64String(encodedString);
+                                    string request = Encoding.UTF8.GetString(data);
+                                    HandleProxyData(request);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+
+                            response = GetPendingJavaScript();
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_GET_RESULT))
+                        {
+                            DetectedUnity();
+                            if (_mWebGLSpeechDetectionPluginResults.Count > 0)
+                            {
+                                response = _mWebGLSpeechDetectionPluginResults[0];
+                                _mWebGLSpeechDetectionPluginResults.RemoveAt(0);
+                            }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_INIT))
+                        {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
+                            DetectedUnity();
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_ABORT))
+                        {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
+                            DetectedUnity();
+                            RunJavaScript("WebGLSpeechDetectionPlugin.Abort()");
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_SET_LANGUAGE))
+                        {
+                            _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
+                            DetectedUnity();
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string lang = parameters["lang"];
+                            if (null != lang)
+                            {
+                                RunJavaScript(string.Format("WebGLSpeechDetectionPlugin.SetLanguage(\"{0}\")", lang));
+                            }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CANCEL))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.Cancel()"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.CreateSpeechSynthesisUtterance()"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_GET_VOICES))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.GetVoices()"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_PITCH))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtterancePitch(0, 0)"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_RATE))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceRate(0, 0)"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_TEXT))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceText(0, 0)"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SPEAK))
+                        {
+                            DetectedUnity();
+                            RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.Speak(0)"));
                         }
 
                         byte[] bytes = UTF8Encoding.UTF8.GetBytes(response);
