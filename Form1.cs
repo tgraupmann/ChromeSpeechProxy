@@ -28,6 +28,7 @@ namespace ChromeSpeechProxy
         const string PATH_SPEECH_SYNTHESIS_CONNECT = "/SpeechSynthesisConnect";
         const string PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE = "/SpeechSynthesisCreateSpeechSynthesisUtterance";
         const string PATH_SPEECH_SYNTHESIS_GET_VOICES = "/SpeechSynthesisGetVoices";
+        const string PATH_SPEECH_SYNTHESIS_PROXY_UTTERANCE = "/SpeechSynthesisProxyUtterance";
         const string PATH_SPEECH_SYNTHESIS_SET_PITCH = "/SpeechSynthesisSetPitch";
         const string PATH_SPEECH_SYNTHESIS_SET_RATE = "/SpeechSynthesisSetRate";
         const string PATH_SPEECH_SYNTHESIS_SET_TEXT = "/SpeechSynthesisSetText";
@@ -58,6 +59,8 @@ namespace ChromeSpeechProxy
         private List<string> _mPendingJavaScript = new List<string>();
 
         private StringBuilder _mStringBuilder = new StringBuilder();
+
+        private List<int> _mWebGLSpeechSynthesisPluginUtterances = new List<int>();
 
         public Form1()
         {
@@ -263,7 +266,7 @@ namespace ChromeSpeechProxy
                 int index;
                 if (int.TryParse(message, out index))
                 {
-
+                    _mWebGLSpeechSynthesisPluginUtterances.Add(index);
                 }
             }
 
@@ -392,6 +395,7 @@ namespace ChromeSpeechProxy
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CONNECT))
                         {
                             DetectedUnity();
+                            _mWebGLSpeechSynthesisPluginUtterances.Clear();
                         }                            
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_CREATE_SPEECH_SYNTHESIS_UTTERANCE))
@@ -404,6 +408,16 @@ namespace ChromeSpeechProxy
                         {
                             DetectedUnity();
                             RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.GetVoices()"));
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_PROXY_UTTERANCE))
+                        {
+                            DetectedUnity();
+                            if (_mWebGLSpeechSynthesisPluginUtterances.Count > 0)
+                            {
+                                response = _mWebGLSpeechSynthesisPluginUtterances[0].ToString();
+                                _mWebGLSpeechSynthesisPluginUtterances.RemoveAt(0);
+                            }
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_PITCH))
