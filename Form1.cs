@@ -33,6 +33,7 @@ namespace ChromeSpeechProxy
         const string PATH_SPEECH_SYNTHESIS_SET_PITCH = "/SpeechSynthesisSetPitch";
         const string PATH_SPEECH_SYNTHESIS_SET_RATE = "/SpeechSynthesisSetRate";
         const string PATH_SPEECH_SYNTHESIS_SET_TEXT = "/SpeechSynthesisSetText";
+        const string PATH_SPEECH_SYNTHESIS_SET_VOICE = "/SpeechSynthesisSetVoice";
         const string PATH_SPEECH_SYNTHESIS_SPEAK = "/SpeechSynthesisSpeak";
 
         const string TOKEN_SPEECH_DETECTION_GET_RESULT = "SpeechDetectionGetResult:";
@@ -492,6 +493,29 @@ namespace ChromeSpeechProxy
                                     text = UTF8Encoding.UTF8.GetString(decodedBytes);
                                 }
                                 RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceText({0}, \"{1}\")", index, text));
+                            }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_SYNTHESIS_SET_VOICE))
+                        {
+                            DetectedUnity();
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string utterance = parameters["utterance"];
+                            int index;
+                            if (int.TryParse(utterance, out index))
+                            {
+                                string encoded = parameters["voice"];
+                                string voice;
+                                if (string.IsNullOrEmpty(encoded))
+                                {
+                                    voice = string.Empty;
+                                }
+                                else
+                                {
+                                    byte[] decodedBytes = Convert.FromBase64String(encoded);
+                                    voice = UTF8Encoding.UTF8.GetString(decodedBytes);
+                                }
+                                RunJavaScript(string.Format("WebGLSpeechSynthesisPlugin.SetUtteranceVoice({0}, \"{1}\")", index, voice));
                             }
                         }
 
