@@ -62,377 +62,6 @@ var WebGLSpeechDetectionPlugin = {
     if (document.mWebGLSpeechDetectionPluginRecognition != undefined) {
       return;
     }
-    document.mWebGLSpeechDetectionLanguages =
-	{
-		"languages": [{
-			"name": "Afrikaans",
-			"dialects": [{
-				"name": "af-ZA",
-				"display": "Afrikaans (South Africa)"
-			}]
-		}, {
-			"name": "Bahasa Indonesia",
-			"dialects": [{
-				"name": "id-ID",
-				"display": "Indonesian (Indonesia)"
-			}]
-		}, {
-			"name": "Bahasa Melayu",
-			"dialects": [{
-				"name": "ms-MY",
-				"display": "Malay (Malaysia)"
-			}]
-		}, {
-			"name": "Català",
-			"dialects": [{
-				"name": "ca-ES",
-				"display": "Catalan (Spain)"
-			}]
-		}, {
-			"name": "Ceština",
-			"dialects": [{
-				"name": "cs-CZ",
-				"display": "Czech (Czech Republic)"
-			}]
-		}, {
-			"name": "Dansk",
-			"dialects": [{
-				"name": "da-DK",
-				"display": "Danish (Denmark)"
-			}]
-		}, {
-			"name": "Deutsch",
-			"dialects": [{
-				"name": "de-DE",
-				"display": "German (Germany)"
-			}]
-		}, {
-			"name": "English",
-			"dialects": [{
-				"name": "en-AU",
-				"description": "Australia"
-			}, {
-				"name": "en-CA",
-				"description": "Canada"
-			}, {
-				"name": "en-IN",
-				"description": "India"
-			}, {
-				"name": "en-NZ",
-				"description": "New Zealand"
-			}, {
-				"name": "en-ZA",
-				"description": "South Africa"
-			}, {
-				"name": "en-GB",
-				"description": "United Kingdom"
-			}, {
-				"name": "en-US",
-				"description": "United States"
-			}]
-		}, {
-			"name": "Español",
-			"dialects": [{
-				"name": "es-AR",
-				"description": "Argentina",
-				"display": "Spanish (Argentina)"
-			}, {
-				"name": "es-BO",
-				"description": "Bolivia",
-				"display": "Spanish (Bolivia)"
-			}, {
-				"name": "es-CL",
-				"description": "Chile",
-				"display": "Spanish (Chile)"
-			}, {
-				"name": "es-CO",
-				"description": "Colombia",
-				"display": "Spanish (Colombia)"
-			}, {
-				"name": "es-CR",
-				"description": "Costa Rica",
-				"display": "Spanish (Costa Rica)"
-			}, {
-				"name": "es-EC",
-				"description": "Ecuador",
-				"display": "Spanish (Ecuador)"
-			}, {
-				"name": "es-SV",
-				"description": "El Salvador",
-				"display": "Spanish (El Salvador)"
-			}, {
-				"name": "es-ES",
-				"description": "España",
-				"display": "Spanish (Spain)"
-			}, {
-				"name": "es-US",
-				"description": "Estados Unidos",
-				"display": "Spanish (United States)"
-			}, {
-				"name": "es-GT",
-				"description": "Guatemala",
-				"display": "Spanish (Guatemala)"
-			}, {
-				"name": "es-HN",
-				"description": "Honduras",
-				"display": "Spanish (Honduras)"
-			}, {
-				"name": "es-MX",
-				"description": "México",
-				"display": "Spanish (Mexico)"
-			}, {
-				"name": "es-NI",
-				"description": "Nicaragua",
-				"display": "Spanish (Nicaragua)"
-			}, {
-				"name": "es-PA",
-				"description": "Panamá",
-				"display": "Spanish (Panama)"
-			}, {
-				"name": "es-PY",
-				"description": "Paraguay",
-				"display": "Spanish (Paraguay)"
-			}, {
-				"name": "es-PE",
-				"description": "Perú",
-				"display": "Spanish (Peru)"
-			}, {
-				"name": "es-PR",
-				"description": "Puerto Rico",
-				"display": "Spanish (Puerto Rico)"
-			}, {
-				"name": "es-DO",
-				"description": "República Dominicana",
-				"display": "Spanish (Dominican Republic)"
-			}, {
-				"name": "es-UY",
-				"description": "Uruguay",
-				"display": "Spanish (Uruguay)"
-			}, {
-				"name": "es-VE",
-				"description": "Venezuela",
-				"display": "Spanish (Venezuela)"
-			}]
-		}, {
-			"name": "Euskara",
-			"dialects": [{
-				"name": "eu-ES",
-				"display": "Basque (Spain)"
-			}]
-		}, {
-			"name": "Filipino",
-			"dialects": [{
-				"name": "fil-PH",
-				"display": "Filipino (Philippines)"
-			}]
-		}, {
-			"name": "Français",
-			"dialects": [{
-				"name": "fr-FR",
-				"display": "French (France)"
-			}]
-		}, {
-			"name": "Galego",
-			"dialects": [{
-				"name": "gl-ES",
-				"display": "Galician (Spain)"
-			}]
-		}, {
-			"name": "Hrvatski",
-			"dialects": [{
-				"name": "hr-HR",
-				"display": "Croatian (Croatia)"
-			}]
-		}, {
-			"name": "IsiZulu",
-			"dialects": [{
-				"name": "zu-ZA",
-				"display": "Zulu (South Africa)"
-			}]
-		}, {
-			"name": "Íslenska",
-			"dialects": [{
-				"name": "is-IS",
-				"display": "Icelandic (Iceland)"
-			}]
-		}, {
-			"name": "Italiano",
-			"dialects": [{
-				"name": "it-IT",
-				"description": "Italia",
-				"display": "Italian (Italy)"
-			}, {
-				"name": "it-CH",
-				"description": "Svizzera"
-			}]
-		}, {
-			"name": "Lietuviu",
-			"dialects": [{
-				"name": "lt-LT",
-				"display": "Lithuanian (Lithuania)"
-			}]
-		}, {
-			"name": "Magyar",
-			"dialects": [{
-				"name": "hu-HU",
-				"display": "Hungarian (Hungary)"
-			}]
-		}, {
-			"name": "Nederlands",
-			"dialects": [{
-				"name": "nl-NL",
-				"display": "Dutch (Netherlands)"
-			}]
-		}, {
-			"name": "Norsk bokmål",
-			"dialects": [{
-				"name": "nb-NO",
-				"display": "Norwegian Bokmål (Norway)"
-			}]
-		}, {
-			"name": "Polski",
-			"dialects": [{
-				"name": "pl-PL",
-				"display": "Polish (Poland)"
-			}]
-		}, {
-			"name": "Português",
-			"dialects": [{
-				"name": "pt-BR",
-				"description": "Brasil",
-				"display": "Portuguese (Brazil)"
-			}, {
-				"name": "pt-PT",
-				"description": "Portugal",
-				"display": "Portuguese (Portugal)"
-			}]
-		}, {
-			"name": "Româna",
-			"dialects": [{
-				"name": "ro-RO",
-				"display": "Romanian (Romania)"
-			}]
-		}, {
-			"name": "Slovenšcina",
-			"dialects": [{
-				"name": "sl-SI",
-				"display": "Slovenian (Slovenia)"
-			}]
-		}, {
-			"name": "Slovencina",
-			"dialects": [{
-				"name": "sk-SK",
-				"display": "Slovak (Slovakia)"
-			}]
-		}, {
-			"name": "Suomi",
-			"dialects": [{
-				"name": "fi-FI",
-				"display": "Finnish (Finland)"
-			}]
-		}, {
-			"name": "Svenska",
-			"dialects": [{
-				"name": "sv-SE",
-				"display": "Swedish (Sweden)"
-			}]
-		}, {
-			"name": "Ti?ng Vi?t",
-			"dialects": [{
-				"name": "vi-VN",
-				"display": "Vietnamese (Vietnam)"
-			}]
-		}, {
-			"name": "Türkçe",
-			"dialects": [{
-				"name": "tr-TR",
-				"display": "Turkish (Turkey)"
-			}]
-		}, {
-			"name": "????????",
-			"display": "Greek",
-			"dialects": [{
-				"name": "el-GR",
-				"display": "Greek (Greece)"
-			}]
-		}, {
-			"name": "?????????",
-			"display": "Bulgarian",
-			"dialects": [{
-				"name": "bg-BG",
-				"display": "Bulgarian (Bulgaria)"
-			}]
-		}, {
-			"name": "P??????",
-			"display": "Russian",
-			"dialects": [{
-				"name": "ru-RU",
-				"display": "Russian (Russia)"
-			}]
-		}, {
-			"name": "??????",
-			"display": "Serbian",
-			"dialects": [{
-				"name": "sr-RS",
-				"display": "Serbian (Serbia)"
-			}]
-		}, {
-			"name": "??????????",
-			"display": "Ukrainian",
-			"dialects": [{
-				"name": "uk-UA",
-				"display": "Ukrainian (Ukraine)"
-			}]
-		}, {
-			"name": "???",
-			"display": "Korean",
-			"dialects": [{
-				"name": "ko-KR",
-				"display": "Korean (South Korea)"
-			}]
-		}, {
-			"name": "??",
-			"display": "Chinese",
-			"dialects": [{
-				"name": "cmn-Hans-CN",
-				"description": "??? (????)",
-				"display": "Mandarin (Simplified, China)"
-			}, {
-				"name": "cmn-Hans-HK",
-				"description": "??? (??)",
-				"display": "Mandarin (Simplified, Hong Kong)"
-			}, {
-				"name": "cmn-Hant-TW",
-				"description": "?? (??)",
-				"display": "Mandarin (Traditional, Taiwan)"
-			}, {
-				"name": "yue-Hant-HK",
-				"description": "?? (??)",
-				"display": "Cantonese (Traditional, Hong Kong)"
-			}]
-		}, {
-			"name": "???",
-			"display": "Japanese",
-			"dialects": [{
-				"name": "ja-JP",
-				"display": "Japanese (Japan)"
-			}]
-		}, {
-			"name": "??????",
-			"display": "Hindi",
-			"dialects": [{
-				"name": "hi-IN",
-				"display": "Hindi (India)"
-			}]
-		}, {
-			"name": "???????",
-			"display": "Thai",
-			"dialects": [{
-				"name": "th-TH",
-				"display": "Thai (Thailand)"
-			}]
-		}]
-	};
     document.mWebGLSpeechDetectionPluginResults = [];
     document.mWebGLSpeechDetectionPluginRecognition = new SpeechRecognition();
     document.mWebGLSpeechDetectionPluginRecognition.interimResults = true;
@@ -527,12 +156,380 @@ var WebGLSpeechDetectionPlugin = {
   GetLanguages: function() {
     //console.log("GetLanguages:");
 
-    if (document.mWebGLSpeechDetectionLanguages == undefined) {
-      returnStr = "No results available";
-    } else {
-      //console.log(JSON.stringify(document.mWebGLSpeechDetectionLanguages, undefined, 2));
-      returnStr = encodeURIComponent(JSON.stringify(document.mWebGLSpeechDetectionLanguages));
-    }
+      document.mWebGLSpeechDetectionLanguages =
+      {
+          "languages": [{
+              "name": "Afrikaans",
+              "dialects": [{
+                  "name": "af-ZA",
+                  "display": "Afrikaans (South Africa)"
+              }]
+          }, {
+              "name": "Bahasa Indonesia",
+              "dialects": [{
+                  "name": "id-ID",
+                  "display": "Indonesian (Indonesia)"
+              }]
+          }, {
+              "name": "Bahasa Melayu",
+              "dialects": [{
+                  "name": "ms-MY",
+                  "display": "Malay (Malaysia)"
+              }]
+          }, {
+              "name": "Català",
+              "dialects": [{
+                  "name": "ca-ES",
+                  "display": "Catalan (Spain)"
+              }]
+          }, {
+              "name": "Ceština",
+              "dialects": [{
+                  "name": "cs-CZ",
+                  "display": "Czech (Czech Republic)"
+              }]
+          }, {
+              "name": "Dansk",
+              "dialects": [{
+                  "name": "da-DK",
+                  "display": "Danish (Denmark)"
+              }]
+          }, {
+              "name": "Deutsch",
+              "dialects": [{
+                  "name": "de-DE",
+                  "display": "German (Germany)"
+              }]
+          }, {
+              "name": "English",
+              "dialects": [{
+                  "name": "en-AU",
+                  "description": "Australia"
+              }, {
+                  "name": "en-CA",
+                  "description": "Canada"
+              }, {
+                  "name": "en-IN",
+                  "description": "India"
+              }, {
+                  "name": "en-NZ",
+                  "description": "New Zealand"
+              }, {
+                  "name": "en-ZA",
+                  "description": "South Africa"
+              }, {
+                  "name": "en-GB",
+                  "description": "United Kingdom"
+              }, {
+                  "name": "en-US",
+                  "description": "United States"
+              }]
+          }, {
+              "name": "Español",
+              "dialects": [{
+                  "name": "es-AR",
+                  "description": "Argentina",
+                  "display": "Spanish (Argentina)"
+              }, {
+                  "name": "es-BO",
+                  "description": "Bolivia",
+                  "display": "Spanish (Bolivia)"
+              }, {
+                  "name": "es-CL",
+                  "description": "Chile",
+                  "display": "Spanish (Chile)"
+              }, {
+                  "name": "es-CO",
+                  "description": "Colombia",
+                  "display": "Spanish (Colombia)"
+              }, {
+                  "name": "es-CR",
+                  "description": "Costa Rica",
+                  "display": "Spanish (Costa Rica)"
+              }, {
+                  "name": "es-EC",
+                  "description": "Ecuador",
+                  "display": "Spanish (Ecuador)"
+              }, {
+                  "name": "es-SV",
+                  "description": "El Salvador",
+                  "display": "Spanish (El Salvador)"
+              }, {
+                  "name": "es-ES",
+                  "description": "España",
+                  "display": "Spanish (Spain)"
+              }, {
+                  "name": "es-US",
+                  "description": "Estados Unidos",
+                  "display": "Spanish (United States)"
+              }, {
+                  "name": "es-GT",
+                  "description": "Guatemala",
+                  "display": "Spanish (Guatemala)"
+              }, {
+                  "name": "es-HN",
+                  "description": "Honduras",
+                  "display": "Spanish (Honduras)"
+              }, {
+                  "name": "es-MX",
+                  "description": "México",
+                  "display": "Spanish (Mexico)"
+              }, {
+                  "name": "es-NI",
+                  "description": "Nicaragua",
+                  "display": "Spanish (Nicaragua)"
+              }, {
+                  "name": "es-PA",
+                  "description": "Panamá",
+                  "display": "Spanish (Panama)"
+              }, {
+                  "name": "es-PY",
+                  "description": "Paraguay",
+                  "display": "Spanish (Paraguay)"
+              }, {
+                  "name": "es-PE",
+                  "description": "Perú",
+                  "display": "Spanish (Peru)"
+              }, {
+                  "name": "es-PR",
+                  "description": "Puerto Rico",
+                  "display": "Spanish (Puerto Rico)"
+              }, {
+                  "name": "es-DO",
+                  "description": "República Dominicana",
+                  "display": "Spanish (Dominican Republic)"
+              }, {
+                  "name": "es-UY",
+                  "description": "Uruguay",
+                  "display": "Spanish (Uruguay)"
+              }, {
+                  "name": "es-VE",
+                  "description": "Venezuela",
+                  "display": "Spanish (Venezuela)"
+              }]
+          }, {
+              "name": "Euskara",
+              "dialects": [{
+                  "name": "eu-ES",
+                  "display": "Basque (Spain)"
+              }]
+          }, {
+              "name": "Filipino",
+              "dialects": [{
+                  "name": "fil-PH",
+                  "display": "Filipino (Philippines)"
+              }]
+          }, {
+              "name": "Français",
+              "dialects": [{
+                  "name": "fr-FR",
+                  "display": "French (France)"
+              }]
+          }, {
+              "name": "Galego",
+              "dialects": [{
+                  "name": "gl-ES",
+                  "display": "Galician (Spain)"
+              }]
+          }, {
+              "name": "Hrvatski",
+              "dialects": [{
+                  "name": "hr-HR",
+                  "display": "Croatian (Croatia)"
+              }]
+          }, {
+              "name": "IsiZulu",
+              "dialects": [{
+                  "name": "zu-ZA",
+                  "display": "Zulu (South Africa)"
+              }]
+          }, {
+              "name": "Íslenska",
+              "dialects": [{
+                  "name": "is-IS",
+                  "display": "Icelandic (Iceland)"
+              }]
+          }, {
+              "name": "Italiano",
+              "dialects": [{
+                  "name": "it-IT",
+                  "description": "Italia",
+                  "display": "Italian (Italy)"
+              }, {
+                  "name": "it-CH",
+                  "description": "Svizzera"
+              }]
+          }, {
+              "name": "Lietuviu",
+              "dialects": [{
+                  "name": "lt-LT",
+                  "display": "Lithuanian (Lithuania)"
+              }]
+          }, {
+              "name": "Magyar",
+              "dialects": [{
+                  "name": "hu-HU",
+                  "display": "Hungarian (Hungary)"
+              }]
+          }, {
+              "name": "Nederlands",
+              "dialects": [{
+                  "name": "nl-NL",
+                  "display": "Dutch (Netherlands)"
+              }]
+          }, {
+              "name": "Norsk bokmål",
+              "dialects": [{
+                  "name": "nb-NO",
+                  "display": "Norwegian Bokmål (Norway)"
+              }]
+          }, {
+              "name": "Polski",
+              "dialects": [{
+                  "name": "pl-PL",
+                  "display": "Polish (Poland)"
+              }]
+          }, {
+              "name": "Português",
+              "dialects": [{
+                  "name": "pt-BR",
+                  "description": "Brasil",
+                  "display": "Portuguese (Brazil)"
+              }, {
+                  "name": "pt-PT",
+                  "description": "Portugal",
+                  "display": "Portuguese (Portugal)"
+              }]
+          }, {
+              "name": "Româna",
+              "dialects": [{
+                  "name": "ro-RO",
+                  "display": "Romanian (Romania)"
+              }]
+          }, {
+              "name": "Slovenšcina",
+              "dialects": [{
+                  "name": "sl-SI",
+                  "display": "Slovenian (Slovenia)"
+              }]
+          }, {
+              "name": "Slovencina",
+              "dialects": [{
+                  "name": "sk-SK",
+                  "display": "Slovak (Slovakia)"
+              }]
+          }, {
+              "name": "Suomi",
+              "dialects": [{
+                  "name": "fi-FI",
+                  "display": "Finnish (Finland)"
+              }]
+          }, {
+              "name": "Svenska",
+              "dialects": [{
+                  "name": "sv-SE",
+                  "display": "Swedish (Sweden)"
+              }]
+          }, {
+              "name": "Ti?ng Vi?t",
+              "dialects": [{
+                  "name": "vi-VN",
+                  "display": "Vietnamese (Vietnam)"
+              }]
+          }, {
+              "name": "Türkçe",
+              "dialects": [{
+                  "name": "tr-TR",
+                  "display": "Turkish (Turkey)"
+              }]
+          }, {
+              "name": "????????",
+              "display": "Greek",
+              "dialects": [{
+                  "name": "el-GR",
+                  "display": "Greek (Greece)"
+              }]
+          }, {
+              "name": "?????????",
+              "display": "Bulgarian",
+              "dialects": [{
+                  "name": "bg-BG",
+                  "display": "Bulgarian (Bulgaria)"
+              }]
+          }, {
+              "name": "P??????",
+              "display": "Russian",
+              "dialects": [{
+                  "name": "ru-RU",
+                  "display": "Russian (Russia)"
+              }]
+          }, {
+              "name": "??????",
+              "display": "Serbian",
+              "dialects": [{
+                  "name": "sr-RS",
+                  "display": "Serbian (Serbia)"
+              }]
+          }, {
+              "name": "??????????",
+              "display": "Ukrainian",
+              "dialects": [{
+                  "name": "uk-UA",
+                  "display": "Ukrainian (Ukraine)"
+              }]
+          }, {
+              "name": "???",
+              "display": "Korean",
+              "dialects": [{
+                  "name": "ko-KR",
+                  "display": "Korean (South Korea)"
+              }]
+          }, {
+              "name": "??",
+              "display": "Chinese",
+              "dialects": [{
+                  "name": "cmn-Hans-CN",
+                  "description": "??? (????)",
+                  "display": "Mandarin (Simplified, China)"
+              }, {
+                  "name": "cmn-Hans-HK",
+                  "description": "??? (??)",
+                  "display": "Mandarin (Simplified, Hong Kong)"
+              }, {
+                  "name": "cmn-Hant-TW",
+                  "description": "?? (??)",
+                  "display": "Mandarin (Traditional, Taiwan)"
+              }, {
+                  "name": "yue-Hant-HK",
+                  "description": "?? (??)",
+                  "display": "Cantonese (Traditional, Hong Kong)"
+              }]
+          }, {
+              "name": "???",
+              "display": "Japanese",
+              "dialects": [{
+                  "name": "ja-JP",
+                  "display": "Japanese (Japan)"
+              }]
+          }, {
+              "name": "??????",
+              "display": "Hindi",
+              "dialects": [{
+                  "name": "hi-IN",
+                  "display": "Hindi (India)"
+              }]
+          }, {
+              "name": "???????",
+              "display": "Thai",
+              "dialects": [{
+                  "name": "th-TH",
+                  "display": "Thai (Thailand)"
+              }]
+          }]
+      };
+
+    //console.log(JSON.stringify(document.mWebGLSpeechDetectionLanguages, undefined, 2));
+    var returnStr = encodeURIComponent(JSON.stringify(document.mWebGLSpeechDetectionLanguages));
 
     var msg = "SpeechDetectionGetLanguages:" + returnStr;
     proxyData(msg);

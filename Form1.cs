@@ -21,6 +21,7 @@ namespace ChromeSpeechProxy
 
         const string PATH_SPEECH_DETECTION_ABORT = "/SpeechDetectionAbort";
         const string PATH_SPEECH_DETECTION_INIT = "/SpeechDetectionInit";
+        const string PATH_SPEECH_DETECTION_GET_LANGUAGES = "/SpeechDetectionGetLanguages";
         const string PATH_SPEECH_DETECTION_GET_RESULT = "/SpeechDetectionGetResult";
         const string PATH_SPEECH_DETECTION_SET_LANGUAGE = "/SpeechDetectionSetLanguage";
 
@@ -36,6 +37,7 @@ namespace ChromeSpeechProxy
         const string PATH_SPEECH_SYNTHESIS_SET_VOICE = "/SpeechSynthesisSetVoice";
         const string PATH_SPEECH_SYNTHESIS_SPEAK = "/SpeechSynthesisSpeak";
 
+        const string TOKEN_SPEECH_DETECTION_GET_LANGUAGES = "SpeechDetectionGetLanguages:";
         const string TOKEN_SPEECH_DETECTION_GET_RESULT = "SpeechDetectionGetResult:";
         const string TOKEN_SPEECH_DETECTION_INIT = "SpeechDetectionInit:";
 
@@ -55,6 +57,8 @@ namespace ChromeSpeechProxy
         private bool _mClosing = false;
 
         private Thread _mThread = null;
+
+        private string _mWebGLSpeechDetectionPluginLanguages = null; //start as null
 
         private List<string> _mWebGLSpeechDetectionPluginResults = new List<string>();
 
@@ -252,6 +256,16 @@ namespace ChromeSpeechProxy
             {
             }
 
+            else if (request.StartsWith(TOKEN_SPEECH_DETECTION_GET_LANGUAGES))
+            {
+                string jsonData = request.Substring(TOKEN_SPEECH_DETECTION_GET_LANGUAGES.Length);
+                if (!string.IsNullOrEmpty(jsonData))
+                {
+                    string decoded = HttpUtility.UrlDecode(jsonData);
+                    _mWebGLSpeechDetectionPluginLanguages = decoded;
+                }
+            }
+
             else if (request.StartsWith(TOKEN_SPEECH_DETECTION_GET_RESULT))
             {
                 string message = request.Substring(TOKEN_SPEECH_DETECTION_GET_RESULT.Length);
@@ -384,6 +398,19 @@ namespace ChromeSpeechProxy
                             _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
                             DetectedUnity();
                             RunJavaScript("WebGLSpeechDetectionPlugin.Abort()");
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_GET_LANGUAGES))
+                        {
+                            DetectedUnity();
+                            if (null == _mWebGLSpeechDetectionPluginLanguages)
+                            {
+                                RunJavaScript("WebGLSpeechDetectionPlugin.GetLanguages()");
+                            }
+                            else
+                            {
+                                response = _mWebGLSpeechDetectionPluginLanguages;
+                            }
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_SET_LANGUAGE))
