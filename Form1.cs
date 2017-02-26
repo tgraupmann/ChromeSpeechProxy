@@ -21,10 +21,14 @@ namespace ChromeSpeechProxy
         const string PATH_PROXY_DATA = "/ProxyData";
 
         const string PATH_SPEECH_DETECTION_ABORT = "/SpeechDetectionAbort";
+        const string PATH_SPEECH_DETECTION_CLOSE_BROWSER_TAB = "/SpeechDetectionCloseBrowserTab";
+        const string PATH_SPEECH_DETECTION_CLOSE_PROXY = "/SpeechDetectionCloseProxy";
         const string PATH_SPEECH_DETECTION_INIT = "/SpeechDetectionInit";
         const string PATH_SPEECH_DETECTION_GET_LANGUAGES = "/SpeechDetectionGetLanguages";
         const string PATH_SPEECH_DETECTION_GET_RESULT = "/SpeechDetectionGetResult";
+        const string PATH_SPEECH_DETECTION_OPEN_BROWSER_TAB = "/SpeechDetectionOpenBrowserTab";
         const string PATH_SPEECH_DETECTION_SET_LANGUAGE = "/SpeechDetectionSetLanguage";
+        const string PATH_SPEECH_DETECTION_SET_PROXY_PORT = "/SpeechDetectionSetProxyPort";
 
         const string PATH_SPEECH_SYNTHESIS_CANCEL = "/SpeechSynthesisCancel";
         const string PATH_SPEECH_SYNTHESIS_CONNECT = "/SpeechSynthesisConnect";
@@ -218,6 +222,36 @@ namespace ChromeSpeechProxy
             }
         }
 
+        private void DisconnectChrome()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { DisconnectChrome(); });
+                return;
+            }
+
+            if (!_mClosing)
+            {
+                lblChrome.Text = "Chrome: [Disonnected]";
+            }
+        }
+
+        private void CloseApp()
+        {
+            if (_mClosing)
+            {
+                return;
+            }
+
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { CloseApp(); });
+                return;
+            }
+
+            Close();
+        }
+
         private void DetectedUnity()
         {
             if (_mClosing)
@@ -409,6 +443,18 @@ namespace ChromeSpeechProxy
                             RunJavaScript("WebGLSpeechDetectionPlugin.Abort()");
                         }
 
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_CLOSE_BROWSER_TAB))
+                        {
+                            DetectedUnity();
+                            DisconnectChrome();
+                            RunJavaScript("window.close()");
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_CLOSE_PROXY))
+                        {
+                            CloseApp();
+                        }
+
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_GET_LANGUAGES))
                         {
                             DetectedUnity();
@@ -422,6 +468,13 @@ namespace ChromeSpeechProxy
                             }
                         }
 
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_OPEN_BROWSER_TAB))
+                        {
+                            DetectedUnity();
+                            _mPendingJavaScript.Clear();
+                            btnOpenChrome_Click(this, null);
+                        }
+
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_SET_LANGUAGE))
                         {
                             _mWebGLSpeechDetectionPluginResults.Clear(); //clear previous results
@@ -431,6 +484,18 @@ namespace ChromeSpeechProxy
                             if (null != lang)
                             {
                                 RunJavaScript(string.Format("WebGLSpeechDetectionPlugin.SetLanguage(\"{0}\")", lang));
+                            }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_SPEECH_DETECTION_SET_PROXY_PORT))
+                        {
+                            DetectedUnity();
+                            System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(context.Request.Url.Query);
+                            string strPort = parameters["port"];
+                            int port;
+                            if (int.TryParse(strPort, out port))
+                            {
+                                SetProxyPort(port);
                             }
                         }
 
