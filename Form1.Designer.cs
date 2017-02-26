@@ -36,6 +36,7 @@
             this.lblChrome = new System.Windows.Forms.Label();
             this.lblUnity = new System.Windows.Forms.Label();
             this.btnOpenChrome = new System.Windows.Forms.Button();
+            this.btnCloseChrome = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -131,11 +132,22 @@
             this.btnOpenChrome.UseVisualStyleBackColor = true;
             this.btnOpenChrome.Click += new System.EventHandler(this.btnOpenChrome_Click);
             // 
+            // btnCloseChrome
+            // 
+            this.btnCloseChrome.Location = new System.Drawing.Point(252, 161);
+            this.btnCloseChrome.Name = "btnCloseChrome";
+            this.btnCloseChrome.Size = new System.Drawing.Size(199, 23);
+            this.btnCloseChrome.TabIndex = 4;
+            this.btnCloseChrome.Text = "Close Chrome Proxy Tab";
+            this.btnCloseChrome.UseVisualStyleBackColor = true;
+            this.btnCloseChrome.Click += new System.EventHandler(this.btnCloseChrome_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(463, 455);
+            this.Controls.Add(this.btnCloseChrome);
             this.Controls.Add(this.btnOpenChrome);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -163,6 +175,7 @@
         private System.Windows.Forms.Label lblChrome;
         private System.Windows.Forms.Label lblUnity;
         private System.Windows.Forms.Button btnOpenChrome;
+        private System.Windows.Forms.Button btnCloseChrome;
     }
 }
 

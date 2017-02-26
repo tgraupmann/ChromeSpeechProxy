@@ -424,8 +424,7 @@ namespace ChromeSpeechProxy
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_CLOSE_BROWSER_TAB))
                         {
                             DetectedUnity();
-                            DisconnectChrome();
-                            RunJavaScript("window.close()");
+                            btnCloseChrome_Click(this, null);
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_CLOSE_PROXY))
@@ -721,6 +720,12 @@ namespace ChromeSpeechProxy
             process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_CMD,
                 args);
             process.Start();
+        }
+
+        private void btnCloseChrome_Click(object sender, EventArgs e)
+        {
+            DisconnectChrome();
+            RunJavaScript("window.close()");
         }
     }
 }
