@@ -137,7 +137,7 @@ namespace ChromeSpeechProxy
             return result;
         }
 
-        private void SetProxyPort(int port)
+        public static void SetProxyPort(int port)
         {
             Microsoft.Win32.RegistryKey key;
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(KEY_CHROME_SPEECH_PROXY);

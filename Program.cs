@@ -12,8 +12,17 @@ namespace ChromeSpeechProxy
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                string strPort = args[0];
+                int port;
+                if (int.TryParse(strPort, out port))
+                {
+                    Form1.SetProxyPort(port);
+                }
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
