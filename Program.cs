@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ChromeSpeechProxy
@@ -23,6 +21,8 @@ namespace ChromeSpeechProxy
                     Form1.SetProxyPort(port);
                 }
             }
+            string installDir = Directory.GetCurrentDirectory();
+            Form1.SetInstallDirectory(installDir);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

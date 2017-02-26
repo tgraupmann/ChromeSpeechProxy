@@ -14,6 +14,7 @@ namespace ChromeSpeechProxy
         const string APP_CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 
         const string KEY_CHROME_SPEECH_PROXY = "CHROME_SPEECH_PROXY";
+        const string KEY_INSTALL_DIRECTORY = "INSTALL_DIRECTORY";
         const string KEY_PROXY_PORT = "PROXY_PORT";
 
         const string PATH_ROOT = "/";
@@ -135,6 +136,14 @@ namespace ChromeSpeechProxy
             }
 
             return result;
+        }
+
+        public static void SetInstallDirectory(string installDir)
+        {
+            Microsoft.Win32.RegistryKey key;
+            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(KEY_CHROME_SPEECH_PROXY);
+            key.SetValue(KEY_INSTALL_DIRECTORY, installDir);
+            key.Close();
         }
 
         public static void SetProxyPort(int port)
