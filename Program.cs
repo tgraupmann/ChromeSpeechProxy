@@ -21,8 +21,13 @@ namespace ChromeSpeechProxy
                     Form1.SetProxyPort(port);
                 }
             }
-            string installDir = Directory.GetCurrentDirectory();
-            Form1.SetInstallDirectory(installDir);
+            string[] commandArgs = Environment.GetCommandLineArgs();
+            if (commandArgs.Length > 0)
+            {
+                FileInfo fi = new FileInfo(commandArgs[0]);
+                string installDir = fi.DirectoryName;
+                Form1.SetInstallDirectory(installDir);
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
