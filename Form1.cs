@@ -366,6 +366,7 @@ namespace ChromeSpeechProxy
 
         private void WorkerThread()
         {
+            bool closeApp = false;
             // keep listening and send a response
             while (_mWaitForExit)
             {
@@ -429,7 +430,7 @@ namespace ChromeSpeechProxy
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_CLOSE_PROXY))
                         {
-                            CloseApp();
+                            closeApp = true; //close app after response is sent
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_OPEN_BROWSER_TAB))
@@ -649,6 +650,10 @@ namespace ChromeSpeechProxy
                             {
                                 context.Response.Close();
                             }
+                            if (closeApp)
+                            {
+                                CloseApp();
+                            }
                         }
                         catch (Exception)
                         {
@@ -691,7 +696,23 @@ namespace ChromeSpeechProxy
 
             _mWaitForExit = false;
 
-            _mHttpListener.Abort();
+            try
+            {
+                _mHttpListener.Abort();
+            }
+            catch (Exception)
+            {
+
+            }
+
+            try
+            {
+                _mHttpListener.Stop();
+            }
+            catch (Exception)
+            {
+
+            }
 
             if (!_mClosing)
             {
@@ -714,7 +735,7 @@ namespace ChromeSpeechProxy
         private void btnOpenChrome_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
-            string args = string.Format("/c start \"{0}\" {1}",
+            string args = string.Format("/c start \"\" \"{0}\" {1}",
                 APP_CHROME,
                 string.Format("http://localhost:{0}", txtPort.Text));
             process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_CMD,
