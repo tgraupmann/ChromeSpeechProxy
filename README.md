@@ -14,10 +14,10 @@ The WebGL For Speech Synthesis package is available in the [Unity Asset Store](h
 
 # Intro
 
-The `Chrome Speech Proxy` is a `Windows Form` application that proxies speech data from the `Chrome Browser` into Unity.
+The `Chrome Speech Proxy` is a `Windows Form` application that proxies speech data between the `Chrome Browser` and Unity.
 The proxy supports speech detection and speech synthesis.
-The proxy requires `admin` rights to host an `HttpListener`.
-The `Chrome Browser` nad `Unity` communicate with the proxy and the proxy passes data between the `Chrome Browser` and `Unity`.
+The proxy requires `admin` rights to host the `HTTP` server.
+The `Chrome Browser` and `Unity` communicate with the proxy and the proxy passes data between the `Chrome Browser` and `Unity`.
 
 # Quick Start
 
