@@ -135,7 +135,11 @@ namespace ChromeSpeechProxy
                     key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(KEY_CHROME_SPEECH_PROXY);
                     if (null != key)
                     {
-                        int.TryParse((string)key.GetValue(KEY_PROXY_PORT), out result);
+                        int port;
+                        if (int.TryParse((string)key.GetValue(KEY_PROXY_PORT), out port))
+                        {
+                            result = port;
+                        }
                     }
                 }
             }
