@@ -19,6 +19,10 @@ The proxy supports speech detection and speech synthesis.
 The proxy requires `admin` rights to host the `HTTP` server.
 The `Chrome Browser` and `Unity` communicate with the proxy and the proxy passes data between the `Chrome Browser` and `Unity`.
 
+# Releases
+
+* Download [Chrome Speech Proxy Installer (Windows)](https://www.dropbox.com/s/jh5iu18dhebxywz/ChromeSpeechProxySetup.exe?dl=1)
+
 # Quick Start
 
 1 Launch the proxy

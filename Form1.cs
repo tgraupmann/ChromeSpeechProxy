@@ -100,6 +100,28 @@ namespace ChromeSpeechProxy
             }
         }
 
+        private void SetPortText()
+        {
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate { SetPortText(); });
+                return;
+            }
+            txtPort.Text = GetProxyPort().ToString();
+        }
+
+        private void RestartWorker()
+        {
+            SetStatus("Stopping proxy...");
+            Thread.Sleep(1000);
+            btnStop_Click(null, null);
+            Thread.Sleep(3000);
+            SetPortText();
+            SetStatus("Starting proxy...");
+            Thread.Sleep(1000);
+            btnStart_Click(null, null);
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
@@ -140,6 +162,7 @@ namespace ChromeSpeechProxy
                         {
                             result = port;
                         }
+
                     }
                 }
             }
@@ -453,6 +476,9 @@ namespace ChromeSpeechProxy
                             if (int.TryParse(strPort, out port))
                             {
                                 SetProxyPort(port);
+                                ThreadStart ts = new ThreadStart(RestartWorker);
+                                Thread thread = new Thread(ts);
+                                thread.Start();
                             }
                         }
 
