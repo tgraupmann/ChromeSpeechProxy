@@ -21,7 +21,7 @@ The `Chrome Browser` and `Unity` communicate with the proxy and the proxy passes
 
 # Releases
 
-* Download [Chrome Speech Proxy Installer (Windows)](https://www.dropbox.com/s/jh5iu18dhebxywz/ChromeSpeechProxySetup.exe?dl=1)
+* Download [Chrome Speech Proxy Installer (Windows)](https://github.com/tgraupmann/ChromeSpeechProxy/releases/tag/1.0)
 
 # Quick Start
 
