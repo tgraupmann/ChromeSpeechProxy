@@ -18,6 +18,7 @@ namespace ChromeSpeechProxy
         const string KEY_PROXY_PORT = "PROXY_PORT";
 
         const string PATH_ROOT = "/";
+        const string PATH_CROSS_DOMAIN_POLICY = "/crossdomain.xml";
         const string PATH_PROXY_DATA = "/ProxyData";
 
         const string PATH_CLOSE_BROWSER_TAB = "/CloseBrowserTab";
@@ -425,6 +426,13 @@ namespace ChromeSpeechProxy
                             {
 
                             }
+                        }
+
+                        else if (context.Request.Url.LocalPath.EndsWith(PATH_CROSS_DOMAIN_POLICY))
+                        {
+                            response = "<cross-domain-policy>" + Environment.NewLine;
+                            response += "<allow-access-from domain=\"*\"/>" + Environment.NewLine;
+                            response += "</cross-domain-policy>" + Environment.NewLine;
                         }
 
                         else if (context.Request.Url.LocalPath.EndsWith(PATH_PROXY_DATA))
