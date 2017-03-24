@@ -25,13 +25,15 @@ The `Chrome Browser` and `Unity` communicate with the proxy and the proxy passes
 
 # Quick Start
 
-1 Launch the proxy
+1 Test your browser for compatibility with the [Chrome Speech Demo](https://www.google.com/intl/en/chrome/demos/speech.html)
 
-2 Open the `Chrome Proxy Tab`
+2 Launch the proxy
 
-3 Set the proxy port to an available port that `Unity` has assigned
+3 Open the `Chrome Proxy Tab`
 
-4 Start `Unity` and connect
+4 Set the proxy port to an available port that `Unity` has assigned
+
+5 Start `Unity` and connect
 
 # Screenshot
 
