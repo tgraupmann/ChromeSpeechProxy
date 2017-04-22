@@ -749,6 +749,14 @@ var WebGLSpeechSynthesisPlugin = {
         if (instance == undefined) {
             return;
         }
+        instance.onend = function (event) {
+            var jsonData = {};
+            jsonData.index = index;
+            jsonData.elapsedTime = event.elapsedTime;
+            jsonData.type = event.type;
+            var msg = "SpeechSynthesisOnEnd:" + encodeURIComponent(JSON.stringify(jsonData));
+            proxyData(msg);
+        }
         speechSynthesis.speak(instance);
     },
     Cancel: function () {
