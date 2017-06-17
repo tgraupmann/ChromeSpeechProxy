@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -146,6 +149,50 @@ namespace ChromeSpeechProxy
             }
         }
 
+        private static string GetAppConfig()
+        {
+            string path = Path.Combine(GetAppDataFolder(), "app.config");
+            return path;
+        }
+
+        private static JObject GetAppConfigJson()
+        {
+            SetupAppDataFolder();
+            string path = GetAppConfig();
+            JObject json = null;
+            try
+            {
+                if (File.Exists(path))
+                {
+                    using (FileStream fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        using (StreamReader sr = new StreamReader(fs))
+                        {
+                            using (JsonTextReader jr = new JsonTextReader(sr))
+                            {
+                                json = (JObject)JToken.ReadFrom(jr);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            if (null == json)
+            {
+                json = new JObject();
+            }
+            return json;
+        }
+
+        private static string GetAppDataFolder()
+        {
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), KEY_CHROME_SPEECH_PROXY);
+            return path;
+        }
+
         private string GetPendingJavaScript()
         {
             while (_mPendingJavaScript.Count > 0)
@@ -166,27 +213,20 @@ namespace ChromeSpeechProxy
 
         public static int GetProxyPort()
         {
-            int result = 83;
+            int port = 83;
 
-            Microsoft.Win32.RegistryKey key;
-            foreach (string name in Microsoft.Win32.Registry.CurrentUser.GetSubKeyNames())
+            JObject json = GetAppConfigJson();
+            if (json[KEY_PROXY_PORT] != null &&
+                json[KEY_PROXY_PORT].Type == JTokenType.Integer)
             {
-                if (name == KEY_CHROME_SPEECH_PROXY)
-                {
-                    key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(KEY_CHROME_SPEECH_PROXY);
-                    if (null != key)
-                    {
-                        int port;
-                        if (int.TryParse((string)key.GetValue(KEY_PROXY_PORT), out port))
-                        {
-                            result = port;
-                        }
-
-                    }
-                }
+                port = (int)json[KEY_PROXY_PORT];
+            }
+            else
+            {
+                SetProxyPort(port);
             }
 
-            return result;
+            return port;
         }
 
         /// <summary>
@@ -311,6 +351,27 @@ namespace ChromeSpeechProxy
             _mPendingJavaScript.Add(js);
         }
 
+        private static void SaveAppConfigJson(JObject json)
+        {
+            string path = GetAppConfig();
+            try
+            {
+                using (FileStream fs = File.Open(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        string contents = json.ToString();
+                        sw.Write(contents);
+                        sw.Flush();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         public void SetClosing()
         {
             _mClosing = true;
@@ -318,10 +379,10 @@ namespace ChromeSpeechProxy
 
         public static void SetInstallDirectory(string installDir)
         {
-            Microsoft.Win32.RegistryKey key;
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(KEY_CHROME_SPEECH_PROXY);
-            key.SetValue(KEY_INSTALL_DIRECTORY, installDir);
-            key.Close();
+            SetupAppDataFolder();
+            JObject json = GetAppConfigJson();
+            json[KEY_INSTALL_DIRECTORY] = installDir;
+            SaveAppConfigJson(json);
         }
 
         private void SetPortText()
@@ -332,10 +393,10 @@ namespace ChromeSpeechProxy
 
         public static void SetProxyPort(int port)
         {
-            Microsoft.Win32.RegistryKey key;
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(KEY_CHROME_SPEECH_PROXY);
-            key.SetValue(KEY_PROXY_PORT, port.ToString());
-            key.Close();
+            SetupAppDataFolder();
+            JObject json = GetAppConfigJson();
+            json[KEY_PROXY_PORT] = port;
+            SaveAppConfigJson(json);
         }
 
         private void SetStatus(string msg, params object[] args)
@@ -347,6 +408,15 @@ namespace ChromeSpeechProxy
             AppendStatus(Environment.NewLine);
             AppendStatus(msg, args);
             AppendStatus(Environment.NewLine);
+        }
+
+        private static void SetupAppDataFolder()
+        {
+            string path = GetAppDataFolder();
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
         public void StartProxy()

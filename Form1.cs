@@ -91,7 +91,10 @@ namespace ChromeSpeechProxy
         {
             _mServer = new Server(this);
 
-            txtPort.Text = Server.GetProxyPort().ToString();
+            int port = Server.GetProxyPort();
+            txtPort.TextChanged -= OnTextChangedTxtPort;
+            txtPort.Text = port.ToString();
+            txtPort.TextChanged += OnTextChangedTxtPort;
             OnClickButtonStart(null, null);
         }
 
