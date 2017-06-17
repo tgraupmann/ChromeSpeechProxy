@@ -18,7 +18,7 @@ namespace ChromeSpeechProxy
                 int port;
                 if (int.TryParse(strPort, out port))
                 {
-                    Form1.SetProxyPort(port);
+                    Server.SetProxyPort(port);
                 }
             }
             string[] commandArgs = Environment.GetCommandLineArgs();
@@ -26,7 +26,7 @@ namespace ChromeSpeechProxy
             {
                 FileInfo fi = new FileInfo(commandArgs[0]);
                 string installDir = fi.DirectoryName;
-                Form1.SetInstallDirectory(installDir);
+                Server.SetInstallDirectory(installDir);
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

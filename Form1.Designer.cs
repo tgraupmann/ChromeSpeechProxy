@@ -57,7 +57,7 @@
             this.txtPort.Size = new System.Drawing.Size(93, 31);
             this.txtPort.TabIndex = 1;
             this.txtPort.Text = "83";
-            this.txtPort.TextChanged += new System.EventHandler(this.txtPort_TextChanged);
+            this.txtPort.TextChanged += new System.EventHandler(this.OnTextChangedTxtPort);
             // 
             // btnStart
             // 
@@ -68,7 +68,7 @@
             this.btnStart.TabIndex = 2;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.Click += new System.EventHandler(this.OnClickButtonStart);
             // 
             // btnStop
             // 
@@ -79,7 +79,7 @@
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.Click += new System.EventHandler(this.OnClickButtonStop);
             // 
             // lblStatus
             // 
@@ -130,7 +130,7 @@
             this.btnOpenChrome.TabIndex = 3;
             this.btnOpenChrome.Text = "Open Chrome Proxy Tab";
             this.btnOpenChrome.UseVisualStyleBackColor = true;
-            this.btnOpenChrome.Click += new System.EventHandler(this.btnOpenChrome_Click);
+            this.btnOpenChrome.Click += new System.EventHandler(this.OnClickButtonOpenChrome);
             // 
             // btnCloseChrome
             // 
@@ -140,7 +140,7 @@
             this.btnCloseChrome.TabIndex = 4;
             this.btnCloseChrome.Text = "Close Chrome Proxy Tab";
             this.btnCloseChrome.UseVisualStyleBackColor = true;
-            this.btnCloseChrome.Click += new System.EventHandler(this.btnCloseChrome_Click);
+            this.btnCloseChrome.Click += new System.EventHandler(this.OnClickButtonCloseChrome);
             // 
             // Form1
             // 
@@ -159,7 +159,7 @@
             this.MinimumSize = new System.Drawing.Size(375, 401);
             this.Name = "Form1";
             this.Text = "Chrome Speech Proxy";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.OnFormLoad);
             this.ResumeLayout(false);
             this.PerformLayout();
 
