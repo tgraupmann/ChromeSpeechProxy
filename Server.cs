@@ -1,7 +1,4 @@
-﻿#define WINDOWS
-//#define MAC
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -22,6 +19,7 @@ namespace ChromeSpeechProxy
         const string APP_CHROME_MAC = @"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome";
 
         const string KEY_CHROME_SPEECH_PROXY = "CHROME_SPEECH_PROXY";
+        const string KEY_APP_NAME = "appName";
         const string KEY_INSTALL_DIRECTORY = "installDirectory";
         const string KEY_PROXY_PORT = "proxyPort";
 
@@ -327,27 +325,35 @@ namespace ChromeSpeechProxy
             return _mClosing;
         }
 
+        public static bool IsMacOS()
+        {
+            return Environment.OSVersion.VersionString.ToUpper().StartsWith("UNIX");
+        }
+
         public void OpenChrome()
         {
-#if WINDOWS
             System.Diagnostics.Process process = new System.Diagnostics.Process();
-            string args = string.Format("/c start \"\" \"{0}\" {1}",
-                APP_CHROME_WIN,
-                string.Format("http://localhost:{0}", GetProxyPort()));
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_CMD,
-                args);
-            process.Start();
-#elif MAC
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            string args = string.Format("-c \"{0} {1}\"",
+
+            if (IsMacOS())
+            {
+                string args = string.Format("-c \"{0} {1}\"",
                 APP_CHROME_MAC,
                 string.Format("http://localhost:{0}", GetProxyPort()));
-            process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_BASH_MAC,
-                args);
-            process.Start();
+                process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_BASH_MAC,
+                    args);
+                process.Start();
 
-            Console.WriteLine("{0} {1}", APP_BASH_MAC, args);
-#endif
+                Console.WriteLine("{0} {1}", APP_BASH_MAC, args);
+            }
+            else // Windows
+            {
+                string args = string.Format("/c start \"\" \"{0}\" {1}",
+                APP_CHROME_WIN,
+                string.Format("http://localhost:{0}", GetProxyPort()));
+                process.StartInfo = new System.Diagnostics.ProcessStartInfo(APP_CMD,
+                    args);
+                process.Start();
+            }
         }
 
         private void RestartWorker()
@@ -388,6 +394,14 @@ namespace ChromeSpeechProxy
             {
 
             }
+        }
+
+        public static void SetAppName(string appName)
+        {
+            SetupAppDataFolder();
+            JObject json = GetAppConfigJson();
+            json[KEY_APP_NAME] = appName;
+            SaveAppConfigJson(json);
         }
 
         public void SetClosing()

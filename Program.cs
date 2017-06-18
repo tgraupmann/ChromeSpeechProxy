@@ -12,6 +12,8 @@ namespace ChromeSpeechProxy
         [STAThread]
         static void Main(string[] args)
         {
+            Server.SetAppName(AppDomain.CurrentDomain.FriendlyName);
+
             if (args.Length > 0)
             {
                 string strPort = args[0];
