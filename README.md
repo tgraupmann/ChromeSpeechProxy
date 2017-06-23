@@ -4,9 +4,11 @@ The Chrome Speech Proxy makes it possible to use the `Speech API` on non-WebGL p
 
 # See Also
 
-The WebGL For Speech Detection package is available in the [Unity Asset Store](https://www.assetstore.unity3d.com/en/#!/content/81076).
+* For Windows and MacOS support see [ConsoleChromeSpeechProxy](https://github.com/tgraupmann/ConsoleChromeSpeechProxy)
 
-The WebGL For Speech Synthesis package is available in the [Unity Asset Store](https://www.assetstore.unity3d.com/en/#!/content/81861).
+* The WebGL For Speech Detection package is available in the [Unity Asset Store](https://www.assetstore.unity3d.com/en/#!/content/81076).
+
+* The WebGL For Speech Synthesis package is available in the [Unity Asset Store](https://www.assetstore.unity3d.com/en/#!/content/81861).
 
 # Dependencies
 
